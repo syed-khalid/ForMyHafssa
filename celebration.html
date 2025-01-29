@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternal Romance Celebration ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff3366;
+            --secondary: #ff758c;
+            --gold: #ffd700;
+            --dark: #2a0a2a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, var(--dark), #4a154b);
+            font-family: 'Playfair Display', serif;
+            color: white;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .love-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .celestial-container {
+            position: relative;
+            z-index: 2;
+            transform-style: preserve-3d;
+            animation: celestial-float 6s ease-in-out infinite;
+        }
+
+        .romance-card {
+            background: var(--glass);
+            padding: 4rem 6rem;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 50px rgba(255, 54, 102, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .romance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 20%, 
+                rgba(255, 117, 140, 0.2) 50%, 
+                transparent 80%);
+            animation: celestial-shine 6s infinite;
+            transform: rotate(45deg);
+        }
+
+        .celebration-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            margin: 0;
+            background: linear-gradient(45deg, var(--gold), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 54, 102, 0.5);
+            transform: translateZ(50px);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .love-message {
+            font-size: 1.8rem;
+            margin: 2rem 0;
+            max-width: 600px;
+            line-height: 1.6;
+            transform: translateZ(30px);
+        }
+
+        .romance-buttons {
+            margin-top: 3rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            transform: translateZ(40px);
+        }
+
+        .eternity-btn {
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .eternity-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .eternity-btn:hover::before {
+            left: 100%;
+        }
+
+        .relive-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 0 30px rgba(255, 54, 102, 0.5);
+        }
+
+        .journey-btn {
+            background: linear-gradient(45deg, var(--gold), #ffaa00);
+            color: var(--dark);
+            box-shadow: 0 0 30px rgba(255, 208, 0, 0.5);
+        }
+
+        .floating-hearts span {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-heart 6s infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes celestial-float {
+            0%, 100% { transform: translateY(0) rotateZ(0); }
+            50% { transform: translateY(-20px) rotateZ(2deg); }
+        }
+
+        @keyframes celestial-shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1) translateZ(50px); }
+            50% { transform: scale(1.05) translateZ(50px); }
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .romance-card { padding: 2rem; }
+            .celebration-text { font-size: 3rem; }
+            .love-message { font-size: 1.2rem; }
+            .eternity-btn { padding: 1rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="love-particles" id="particles"></div>
+    <div class="celestial-container">
+        <div class="romance-card" id="mainCard">
+            <div class="floating-hearts"></div>
+            <h1 class="celebration-text">InshaAllah Our Love will be Eternal - في الدنيا والآخرة ✨</h1>
+            <p class="love-message">
+                Hafssa, you’ve made my life so much better and so much more worthy of living. clicking “yes” to being my wife has filled my heart with so much joy and InshaAllah we will make it come true as soon as possible. I can't wait to call you my wife!. 🌌💖
+            </p>
+            <div class="romance-buttons">
+                <button class="eternity-btn relive-btn" id="reliveBtn">Relive the moment 🌹</button>
+                <button class="eternity-btn journey-btn" id="continueBtn">Continue Journey 💫</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="symphony" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        // Initialize 3D card effect
+        const card = document.getElementById('mainCard');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.querySelector('.floating-hearts');
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('span');
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Initialize audio
+        const symphony = document.getElementById('symphony');
+        symphony.volume = 0.3;
+        document.body.addEventListener('click', () => symphony.play(), { once: true });
+
+        // Button interactions
+        document.getElementById('reliveBtn').addEventListener('click', () => {
+            party.confetti(document.body, {
+                count: 500,
+                spread: 360,
+                size: 2,
+                colors: ['#ff3366', '#ff758c', '#ffffff']
+            });
+            setTimeout(() => window.location.href = 'home.html', 1000);
+        });
+
+        document.getElementById('continueBtn').addEventListener('click', () => {
+            party.sparkles(document.body, {
+                count: 100,
+                velocity: () => party.random.randomBox(-200, 200, -200, 200),
+                color: party.Color.fromHex('#ffd700').setH(
+                    party.random.randomRange(0, 360),
+                    party.random.randomRange(50, 100)
+                )
+            });
+            card.classList.add('celestial-float');
+        });
+
+        // Create dynamic background particles
+        class LoveParticle {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.init();
+            }
+
+            init() {
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                for (let i = 0; i < 100; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        size: Math.random() * 3 + 1,
+                        speed: Math.random() * 0.5 + 0.5,
+                        alpha: Math.random() * 0.5 + 0.5
+                    });
+                }
+                this.animate();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.particles.forEach(p => {
+                    p.y += p.speed;
+                    if (p.y > this.canvas.height) {
+                        p.y = 0;
+                        p.x = Math.random() * this.canvas.width;
+                    }
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize effects
+        createHearts();
+        const canvas = document.getElementById('particles');
+        new LoveParticle(canvas);
+    </script>
+</body>
+</html>

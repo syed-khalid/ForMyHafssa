@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hafssa, Will You Be Mine Forever? 🌹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --rose-gold: #b76e79;
+            --deep-red: #dc143c;
+            --gold: #ffd700;
+            --soft-pink: #fff0f5;
+            --dark-bg: #1a1a2e;
+            --transition-standard: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pacifico', cursive;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 30%, #2d0b0b);
+            color: var(--soft-pink);
+            overflow-x: hidden;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+            color: var(--rose-gold);
+            will-change: transform;
+            transform-style: preserve-3d;
+        }
+
+        .title-container {
+            margin: 2rem 0;
+            perspective: 1000px;
+            transition: transform 0.3s ease-out;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            text-shadow: 0 0 20px var(--deep-red);
+            transform-style: preserve-3d;
+            animation: titleGlow 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        .name {
+            color: var(--gold);
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            text-shadow: 0 0 30px var(--gold);
+            display: block;
+            margin: 1rem 0;
+            animation: nameFloat 4s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .love-letter {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(183, 110, 121, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--rose-gold);
+            box-shadow: 0 0 50px rgba(220, 20, 60, 0.3);
+            cursor: pointer;
+            transition: var(--transition-standard);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .love-letter.flipped {
+            transform: rotateY(180deg) rotateX(10deg);
+        }
+
+        .letter-content {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-standard);
+            backface-visibility: hidden;
+        }
+
+        .letter-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-container {
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-standard);
+            transform-style: preserve-3d;
+        }
+
+        .heart-catcher {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            cursor: pointer;
+            transition: var(--transition-standard);
+            position: relative;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b76e79'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+            transform-style: preserve-3d;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 1rem auto;
+            overflow: hidden;
+            transform: perspective(500px) rotateX(30deg);
+            box-shadow: 0 20px 50px rgba(220, 20, 60, 0.2);
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--rose-gold), var(--deep-red));
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left;
+        }
+
+        .start-btn {
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--rose-gold), var(--deep-red));
+            border: none;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition-standard);
+            box-shadow: 0 0 30px rgba(220, 20, 60, 0.5);
+            margin-top: 2rem;
+            transform-style: preserve-3d;
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 50%;
+            padding: 15px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: var(--transition-standard);
+            z-index: 10;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px var(--deep-red); }
+            50% { text-shadow: 0 0 40px var(--deep-red); }
+        }
+
+        @keyframes nameFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .revealed {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .love-letter {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .game-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Hidden credit for Bensound */
+        .bensound-credit {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="heartsContainer"></div>
+    
+    <div class="container">
+        <div class="title-container">
+            <h1 class="title">For My Dearest<br><span class="name">Hafssa</span></h1>
+        </div>
+
+        <div class="love-letter" onclick="revealLetter()">
+            <div class="letter-content">
+                <p>My Lovely Future Wife,</p>
+                <p>I know that our new lifestyles don't intersect a lot with each other but trust me, things will change soon InshaAllah. I'm missing you more than words can ever describe, I think of you every single hour, every single minute, every single second and I feel so blessed to have you in my life. May this distance bring us closer Ameen. I can't wait for our marriage!</p>
+            </div>
+            <div class="letter-back">
+                <p>Every moment with you feels like a beautiful dream...</p>
+                <p>Will you make me the happiest person by saying yes?</p>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <h2>Collect 7 Hearts to Continue 💖</h2>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="heart-catcher" id="heartCatcher"></div>
+        </div>
+
+        <button class="start-btn" id="continueBtn" disabled>
+            Continue Our Journey 🌹
+        </button>
+    </div>
+
+    <div class="music-control" id="musicToggle" role="button" aria-label="Toggle Music">🎵</div>
+    <div class="bensound-credit">Music: <a href="https://www.bensound.com" target="_blank">Bensound</a></div>
+
+    <audio id="bgMusic" preload="auto" loop autoplay>
+        <source src="angelsbymyside.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const heartCatcher = document.getElementById('heartCatcher');
+        const progress = document.getElementById('progress');
+        const continueBtn = document.getElementById('continueBtn');
+        const music = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        
+        let heartsCollected = 0;
+        let musicPlaying = true;
+        let isFlipped = false;
+        let mouseX = 0, mouseY = 0;
+
+        // Initialize music on page load
+        window.onload = function() {
+            // Try to play automatically
+            music.play().catch(function(error) {
+                console.log("Audio autoplay failed:", error);
+                // Show music toggle button if autoplay fails
+                musicToggle.style.display = 'block';
+                musicPlaying = false;
+            });
+            music.volume = 0.5;
+        };
+
+        // 3D Parallax Effect
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
+            
+            document.querySelector('.title-container').style.transform = `
+                rotateX(${mouseY}deg) 
+                rotateY(${mouseX}deg)
+            `;
+
+            document.querySelector('.love-letter').style.transform = `
+                rotateX(${-mouseY}deg) 
+                rotateY(${-mouseX}deg)
+                ${isFlipped ? 'rotateY(180deg)' : ''}
+            `;
+        });
+
+        // Enhanced letter reveal
+        function revealLetter() {
+            const letter = document.querySelector('.love-letter');
+            isFlipped = !isFlipped;
+            letter.classList.toggle('flipped');
+
+            party.confetti(letter, {
+                count: 40,
+                spread: 30,
+                size: 1.5,
+                colors: ['#b76e79', '#ffd700']
+            });
+
+            document.querySelector('.letter-content').classList.add('revealed');
+            document.querySelector('.game-container').classList.add('revealed');
+            document.querySelector('.letter-back').style.opacity = 1;
+            
+            if (!document.querySelector('.heart')) {
+                createHearts();
+            }
+        }
+
+        // Heart-catching game
+        function catchHeart() {
+            if (heartsCollected >= 7) return;
+            
+            heartsCollected++;
+            progress.style.width = `${(heartsCollected/7)*100}%`;
+            
+            // 3D Effects
+            heartCatcher.style.transform = 'scale(1.5) rotateY(180deg)';
+            progress.style.transform = 'scaleY(1.2)';
+            setTimeout(() => {
+                heartCatcher.style.transform = 'scale(1)';
+                progress.style.transform = 'scaleY(1)';
+            }, 300);
+
+            // Particle effect
+            party.sparkles(heartCatcher, {
+                count: 30,
+                speed: 100,
+                size: 1.2,
+                color: '#b76e79'
+            });
+
+            if (heartsCollected === 7) {
+                continueBtn.disabled = false;
+                continueBtn.style.animation = 'pulse 1s infinite';
+                showFinalMessage();
+                
+                // Celebration effect
+                party.confetti(document.body, {
+                    count: 500,
+                    spread: 360,
+                    size: 2,
+                    colors: ['#b76e79', '#dc143c', '#ffd700']
+                });
+            }
+        }
+
+        //// Final message animation
+        function showFinalMessage() {
+            anime({
+                targets: '.game-container',
+                scale: [0.9, 1],
+                rotateY: '+=360',
+                duration: 1500,
+                easing: 'easeOutElastic(1, .5)'
+            });
+
+            const message = document.createElement('div');
+            message.innerHTML = `
+                <h2 style="margin: 1rem; color: var(--gold);">You've Captured My Heart Completely like you always do! 💘</h2>
+                <p>Now let's continue our adventure together...</p>
+            `;
+            message.style.textAlign = 'center';
+            message.style.animation = 'reveal 1s ease';
+            document.querySelector('.game-container').appendChild(message);
+        }
+
+        // Music control
+        function toggleMusic() {
+            musicPlaying = !musicPlaying;
+            musicPlaying ? music.play() : music.pause();
+            musicToggle.style.background = musicPlaying ? 'rgba(255, 215, 0, 0.5)' : 'rgba(255, 215, 0, 0.2)';
+            anime({
+                targets: musicToggle,
+                rotateZ: musicPlaying ? 360 : 0,
+                scale: musicPlaying ? 1.2 : 1,
+                duration: 500
+            });
+        }
+
+        // Heart creation
+        const createHearts = () => {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💖';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animation = `float 6s linear infinite, pulse 2s ease-in-out infinite`;
+                container.appendChild(heart);
+            }
+        };
+
+        // Event Listeners
+        heartCatcher.addEventListener('click', catchHeart);
+        musicToggle.addEventListener('click', toggleMusic);
+        continueBtn.addEventListener('click', () => {
+            anime({
+                targets: 'body',
+                opacity: 0,
+                duration: 1000,
+                complete: () => window.location.href = 'question.html'
+            });
+        });
+
+        // Initialize ambient animations
+        anime({
+            targets: '.title',
+            translateY: [-10, 10],
+            duration: 3000,
+            easing: 'easeInOutQuad',
+            loop: true,
+            direction: 'alternate'
+        });
+
+    </script>
+</body>
+</html>

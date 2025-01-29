@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My wife?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff3366;
+            --secondary: #ff758c;
+            --accent: #ff9e9e;
+            --gold: #ffd700;
+            --dark: #2a0a2a;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, var(--dark), #4a154b);
+            font-family: 'Pacifico', cursive;
+            color: white;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem 5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 50px rgba(255, 54, 102, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 20%, 
+                rgba(255, 117, 140, 0.2) 50%, 
+                transparent 80%);
+            animation: shine 4s infinite;
+            transform: rotate(45deg);
+        }
+
+        .question {
+            font-size: 4rem;
+            margin: 0;
+            background: linear-gradient(45deg, var(--gold), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 54, 102, 0.5);
+            transform: translateZ(50px);
+        }
+
+        .buttons {
+            margin-top: 3rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 0 30px rgba(255, 54, 102, 0.5);
+        }
+
+        .no-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid var(--accent);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .yes-btn:hover {
+            box-shadow: 0 0 50px rgba(255, 54, 102, 0.8);
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateZ(0); }
+            50% { transform: translateY(-20px) rotateZ(5deg); }
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 2rem; }
+            .question { font-size: 2.5rem; }
+            .btn { padding: 1rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="particles"></canvas>
+    <div class="container">
+        <div class="card" id="mainCard">
+            <h1 class="question">Will You Be My Wife? 💖</h1>
+            <div class="buttons">
+                <button class="btn yes-btn" id="yesBtn">Absolutely Yes! 🌹</button>
+                <button class="btn no-btn" id="noBtn">Let Me Think... 🫣</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize particle background
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speed = Math.random() * 0.5 + 0.5;
+                this.alpha = Math.random() * 0.5 + 0.5;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // 3D Card Effect
+        const card = document.getElementById('mainCard');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Button Interactions
+        const noBtn = document.getElementById('noBtn');
+        let clickCount = 0;
+        const messages = [
+            "Are you sure? 😢",
+            "Really sure? 💔",
+            "Think again! 😭",
+            "Last chance! 🌹",
+            "Okay, I'll ask someone else! 😤"
+        ];
+
+        noBtn.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount < messages.length) {
+                noBtn.textContent = messages[clickCount];
+                party.confetti(noBtn, {
+                    count: 40,
+                    size: 1.5,
+                    colors: ['#ff3366', '#ff758c']
+                });
+            } else {
+                window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            }
+            // Make button smaller each click
+            noBtn.style.transform = `scale(${1 - clickCount * 0.1})`;
+        });
+
+        noBtn.addEventListener('mouseenter', () => {
+            party.confetti(noBtn, {
+                count: 20,
+                size: 1,
+                colors: ['#ff3366', '#ff758c']
+            });
+            // Move button randomly
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            noBtn.style.transform = `translate(
+                ${Math.random() * maxX - noBtn.offsetWidth}px,
+                ${Math.random() * maxY - noBtn.offsetHeight}px
+            ) scale(${1 - clickCount * 0.1})`;
+        });
+
+        document.getElementById('yesBtn').addEventListener('click', () => {
+            party.confetti(document.body, {
+                count: 1000,
+                spread: 360,
+                size: 2,
+                colors: ['#ff3366', '#ff758c', '#ffffff']
+            });
+            
+            const hearts = document.createElement('div');
+            hearts.innerHTML = '💖'.repeat(50);
+            document.body.appendChild(hearts);
+            
+            setTimeout(() => {
+                window.location.href = 'celebration.html';
+            }, 2000);
+        });
+
+        // Initialize
+        initParticles();
+        animateParticles();
+    </script>
+</body>
+</html>
